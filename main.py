@@ -13,7 +13,7 @@ class Prediction (BaseModel):
     content_type: str
     predictions: List[dict] = []
 
-@app.post("/predict")
+@app.post("/predict", response_model=Prediction)
 async def prediction(file: UploadFile = File(...)):
     response = {"success": False}
     if not file.content_type.startswith("image/"):
