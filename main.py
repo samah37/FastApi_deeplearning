@@ -1,13 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, HTTPException, UploadFile
 
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.post("/predict")
+def prediction(file: UploadFile = File(...)):
+    response = {"success": False}
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="File provided is not an image.")
+    return response
 
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
